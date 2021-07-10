@@ -5,6 +5,9 @@
 
 package ucf.assignments;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,10 +16,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
 
 import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -24,6 +30,9 @@ public class Controller implements Initializable {
 
     //create a list object
     ToDoList list = new ToDoList();
+
+    ObservableList<Item> obList = FXCollections.observableArrayList();
+
 
     //configure the table and table columns
     @FXML
@@ -48,8 +57,38 @@ public class Controller implements Initializable {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("description"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<Item, LocalDate>("dueDate"));
 
+        dueDatePicker.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "yyyy-MM-dd";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                dueDatePicker.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+
+        obList = FXCollections.observableArrayList(list.getAllItems());
+
+        tableView.setItems(obList);
+
         //update the table to allow the fields to be editable
-        // tableView.setEditable(true);
+        //tableView.setEditable(true);
 
     }
 
@@ -59,10 +98,27 @@ public class Controller implements Initializable {
     //event handlers code
     //item options
     public void addItemClicked(ActionEvent actionEvent) {
-        //get information from text fields and date picker
+        //create new Item object from information in text fields and date picker
+        System.out.println(descriptionTextField.getText());
+        System.out.println(dueDatePicker.getValue());
 
-        //create new Item object
+        //Item another = new Item("Cook", LocalDate.of(2021, Month.JULY, 25));
+        //list.addItem(another);
+
+        Item newItem = new Item(descriptionTextField.getText(), dueDatePicker.getValue());
         //add to list
+        list.addItem(newItem);
+
+        //ObservableList<Item> items = FXCollections.observableArrayList(list.getAllItems());
+        //tableView.setItems(items);
+        tableView.getItems().add(newItem);
+        clearField();
+    }
+
+    public void clearField(){
+        //descriptionTextField.setPromptText("Description");
+        descriptionTextField.setText("");
+        dueDatePicker.setValue(null);
     }
 
     public void editItemClicked(ActionEvent actionEvent) {

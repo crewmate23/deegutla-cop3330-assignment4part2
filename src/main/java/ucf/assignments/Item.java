@@ -36,7 +36,7 @@ public class Item {
     }
 
     //getters methods
-    public LocalDate getDate(){
+    public LocalDate getDueDate(){
         //convert to Date object and return it
         //returns the Date object from convertDate()
         return dueDate;
@@ -54,12 +54,12 @@ public class Item {
     }
 
     //setters methods
-    public void editDescription(String description){
+    public void setDescription(String description){
         //updates this description to the new description from parameter
         this.description = new SimpleStringProperty(description);
     }
 
-    public void editDate(LocalDate dueDate){
+    public void setdueDate(LocalDate dueDate){
         //updates this date to the new date from parameter
         this.dueDate = dueDate;
     }
