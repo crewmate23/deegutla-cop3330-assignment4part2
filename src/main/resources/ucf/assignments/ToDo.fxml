@@ -33,7 +33,7 @@
         </AnchorPane>
       <VBox layoutX="19.0" layoutY="80.0" prefHeight="200.0" prefWidth="586.0">
          <children>
-            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="593.0">
+            <TableView fx:id="tableView" onMouseClicked="#selectedRow" prefHeight="200.0" prefWidth="593.0">
               <columns>
                 <TableColumn fx:id="descriptionColumn" prefWidth="275.0" sortable="false" text="Description" />
                 <TableColumn fx:id="dueDateColumn" minWidth="0.0" prefWidth="196.0" text="Due Date" />
@@ -59,7 +59,7 @@
       <HBox layoutX="19.0" layoutY="347.0" prefHeight="26.0" prefWidth="586.0">
          <children>
             <Button mnemonicParsing="false" onAction="#addItemClicked" prefHeight="26.0" prefWidth="120.0" text="Add Item" />
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Remove Item">
+            <Button mnemonicParsing="false" onAction="#removeItemClicked" prefWidth="120.0" text="Remove Item">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

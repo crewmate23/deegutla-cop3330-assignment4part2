@@ -11,9 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
@@ -87,6 +85,9 @@ public class Controller implements Initializable {
 
         tableView.setItems(obList);
 
+        //allows to select one row at a time from the table for editing or deleting purposes
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
         //update the table to allow the fields to be editable
         //tableView.setEditable(true);
 
@@ -113,6 +114,32 @@ public class Controller implements Initializable {
         //tableView.setItems(items);
         tableView.getItems().add(newItem);
         clearField();
+    }
+
+    public void removeItemClicked(ActionEvent actionEvent){
+        Item selectedItem;
+
+        selectedItem = tableView.getSelectionModel().getSelectedItem();
+        System.out.println(selectedItem.getDescription());
+        System.out.println(selectedItem.getDueDate());
+
+        displayItem(selectedItem);
+
+        list.removeItem(selectedItem);
+        tableView.getItems().remove(selectedItem);
+
+        clearField();
+    }
+
+    public void selectedRow(){
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+
+        displayItem(selectedItem);
+    }
+
+    public void displayItem(Item item){
+        descriptionTextField.setText(item.getDescription());
+        dueDatePicker.setValue(item.getDueDate());
     }
 
     public void clearField(){
