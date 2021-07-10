@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.Controller">
+    <children>
+        <AnchorPane layoutY="-5.0" prefHeight="75.0" prefWidth="795.0" style="-fx-background-color: #68f28d#68f28d;">
+            <children>
+                <Text layoutX="37.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To-Do" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Font" size="40.0" />
+                    </font>
+                </Text>
+            <Text layoutX="676.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Sathwika Deegutla" />
+            <Label layoutX="183.0" layoutY="30.0" text="Label" underline="true">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+      <VBox layoutX="19.0" layoutY="80.0" prefHeight="200.0" prefWidth="586.0">
+         <children>
+            <TableView prefHeight="200.0" prefWidth="593.0">
+              <columns>
+                <TableColumn prefWidth="275.0" sortable="false" text="Description" />
+                <TableColumn minWidth="0.0" prefWidth="196.0" text="Due Date" />
+                  <TableColumn prefWidth="114.0" text="Completed" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <HBox layoutX="19.0" layoutY="305.0" prefHeight="26.0" prefWidth="570.0">
+         <children>
+            <TextField fx:id="descriptionTextField" prefHeight="26.0" prefWidth="293.0" promptText="Description">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TextField>
+            <DatePicker fx:id="due_dateTextField" prefHeight="26.0" prefWidth="207.0" promptText="Due Date">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </DatePicker>
+         </children>
+      </HBox>
+      <HBox layoutX="19.0" layoutY="347.0" prefHeight="26.0" prefWidth="586.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Add Item" />
+            <Button mnemonicParsing="false" prefWidth="120.0" text="Remove Item">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefWidth="120.0" text="Clear All">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefWidth="120.0" text="Edit Item">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <Button layoutX="660.0" layoutY="117.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Save" />
+      <Button layoutX="660.0" layoutY="80.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Help" />
+      <ComboBox layoutX="630.0" layoutY="347.0" prefWidth="150.0" promptText="Display Options" />
+      <Button layoutX="660.0" layoutY="154.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Load" />
+    </children>
+</AnchorPane>

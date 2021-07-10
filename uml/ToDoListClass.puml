@@ -1,0 +1,87 @@
+@startuml
+
+
+class App{
+    main()
+    start()
+}
+
+class Controller{
+    model: AllLists
+
+    'save and load buttons
+    +saveListClicked((ActionEvent)
+    +saveAllClicked(ActionEvent)
+    +loadRecentClicked(ActionEvent)
+    +loadAllClicked(ActionEvent)
+
+    'item buttons
+    +addItemClicked(ActionEvent)
+    +saveItemClicked((ActionEvent)
+    +editItemClicked(ActionEvent)
+    +deleteItemClicked(ActionEvent)
+    +itemFinishedSelected((ActionEvent)
+
+    'list buttons
+    +editListClicked(ActionEvent)
+    +deleteListClicked(ActionEvent)
+    +addListClicked(ActionEvent)
+
+    'Display Options Selection
+    +allDisplaySelected(ActionEvent)
+    +completeDisplaySelected(ActionEvent)
+    +incompleteDisplaySelected(ActionEvent)
+    +displayItems((ArrayList<ToDoList>, ToDoList)
+    +displayLists(ArrayList<ToDoList>)
+}
+
+class AllLists{
+    +lists: ArrayList<ToDoList>
+    -latestSave: ToDoList
+
+    +addToDoList(ToDoList)
+    +removeToDoList(ToDoList)
+    +saveAll()
+    +loadAll(): ArrayList<ToDoList>
+    +save(ToDoList)
+    +loadRecent(): ToDoList
+    +listExists(ToDoList): Boolean
+    +sort(ArrayList<ToDoList>): ArrayList<ToDoList>
+}
+
+class ToDoList{
+    -title: String
+    -items: List<Item>
+
+    +ToDoList(String, String, String)
+    +editTitle(String)
+    +addItem(Item)
+    +removeItem(Item)
+    +getTitle(): String
+    +getAllItems(ToDoList): ArrayList<Item>
+    +inCompleteItems(ToDoList): ArrayList<Item>
+    +completeItems(ToDoList): ArrayList<Item>
+}
+
+class Item{
+    -description: String
+    -date: String
+    -finished: Boolean
+
+    +Item(String, String)
+    -convertDate(): Date
+    +editDescription(String)
+    +editDate(String)
+    +editFinished(Boolean)
+    +getDate(): Date
+    +getDescription(): String
+    +checkFinished(): Boolean
+}
+
+org.javafx.Application <|-- App
+App -- Controller
+Controller *-> AllLists
+AllLists *--> ToDoList
+ToDoList *--> Item
+
+@enduml
