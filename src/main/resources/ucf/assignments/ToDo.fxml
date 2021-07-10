@@ -35,7 +35,7 @@
          <children>
             <TableView fx:id="tableView" onMouseClicked="#selectedRow" prefHeight="200.0" prefWidth="593.0">
               <columns>
-                <TableColumn fx:id="descriptionColumn" prefWidth="275.0" sortable="false" text="Description" />
+                <TableColumn fx:id="descriptionColumn" onEditCommit="#editDescription" prefWidth="275.0" sortable="false" text="Description" />
                 <TableColumn fx:id="dueDateColumn" minWidth="0.0" prefWidth="196.0" text="Due Date" />
                   <TableColumn fx:id="completedColumn" prefWidth="114.0" text="Completed" />
               </columns>
@@ -69,7 +69,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Edit Item">
+            <Button mnemonicParsing="false" onAction="#editItemClicked" prefWidth="120.0" text="Edit Item">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

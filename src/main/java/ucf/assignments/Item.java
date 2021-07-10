@@ -59,7 +59,7 @@ public class Item {
         this.description = new SimpleStringProperty(description);
     }
 
-    public void setdueDate(LocalDate dueDate){
+    public void setDueDate(LocalDate dueDate){
         //updates this date to the new date from parameter
         this.dueDate = dueDate;
     }

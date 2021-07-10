@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 import java.awt.*;
@@ -93,6 +94,9 @@ public class Controller implements Initializable {
 
         //update the table to allow the fields to be editable
         //tableView.setEditable(true);
+        //descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        //dueDateColumn.setCellFactory();
+
 
     }
 
@@ -121,15 +125,12 @@ public class Controller implements Initializable {
     }
 
     public void removeItemClicked(ActionEvent actionEvent){
+
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+
         System.out.print("Removing item: ");
-        System.out.print(descriptionTextField.getText() + " ");
-        System.out.print(dueDatePicker.getValue() + "\n");
-
-        Item selectedItem;
-
-        selectedItem = tableView.getSelectionModel().getSelectedItem();
-        System.out.println(selectedItem.getDescription());
-        System.out.println(selectedItem.getDueDate());
+        System.out.println(selectedItem.getDescription() + " ");
+        System.out.println(selectedItem.getDueDate() + "\n");
 
         displayItem(selectedItem);
 
@@ -150,6 +151,23 @@ public class Controller implements Initializable {
         tableView.getItems().clear();
     }
 
+
+    public void editItemClicked(ActionEvent actionEvent){
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+
+        System.out.print("Editing item: ");
+        System.out.println(selectedItem.getDescription() + " ");
+        System.out.println(selectedItem.getDueDate() + "\n");
+
+        String newDescription = descriptionTextField.getText();
+        LocalDate newDueDate = dueDatePicker.getValue();
+
+        list.updateItem(selectedItem, newDescription, newDueDate);
+
+        tableView.refresh();
+        clearField();
+    }
+
     public void selectedRow(){
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
         displayItem(selectedItem);
@@ -166,7 +184,7 @@ public class Controller implements Initializable {
         dueDatePicker.setValue(null);
     }
 
-    public void editItemClicked(ActionEvent actionEvent) {
+    /*public void editItemClicked(ActionEvent actionEvent) {
         //get the ToDoList list and Item item objects from which button clicked
         //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
         //if description edited, call the Item object's editDescription() method
@@ -231,7 +249,7 @@ public class Controller implements Initializable {
         //firstly, call the AllLists's sort() method and then
         //loop through the parameter of all lists
         //display them on screen
-    }
+    }*/
 
     /*
     NOT NEEDED METHODS ANYMORE

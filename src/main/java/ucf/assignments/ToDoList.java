@@ -7,6 +7,7 @@ package ucf.assignments;
 
 import java.awt.*;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ToDoList {
@@ -81,6 +82,11 @@ public class ToDoList {
             items.remove(i);
         }*/
         items.clear();
+    }
+
+    public void updateItem(Item item, String newDescription, LocalDate newDueDate){
+        item.setDescription(newDescription);
+        item.setDueDate(newDueDate);
     }
 
 
