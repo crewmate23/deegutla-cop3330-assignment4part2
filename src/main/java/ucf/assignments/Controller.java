@@ -6,9 +6,52 @@
 package ucf.assignments;
 
 import javafx.event.ActionEvent;
-import java.util.ArrayList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class Controller {
+import java.awt.*;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable {
+
+    //create a list object
+    ToDoList list = new ToDoList();
+
+    //configure the table and table columns
+    @FXML
+    private TableView<Item> tableView;
+
+    @FXML
+    private TableColumn<Item, String> descriptionColumn;
+    @FXML
+    private TableColumn<Item, LocalDate> dueDateColumn;
+    @FXML
+    //the checkbox used is awt (not javafx)
+    private TableColumn<Item, Checkbox> completedColumn;
+
+
+    //instance variables for text field and date picker
+    @FXML private TextField descriptionTextField;
+    @FXML private DatePicker dueDatePicker;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("description"));
+        dueDateColumn.setCellValueFactory(new PropertyValueFactory<Item, LocalDate>("dueDate"));
+
+        //update the table to allow the fields to be editable
+        // tableView.setEditable(true);
+
+    }
 
     //declare and initialize AllLists arraylist by calling it
     //utilize and interpret AllLists methods according to eventhandlers
@@ -16,7 +59,10 @@ public class Controller {
     //event handlers code
     //item options
     public void addItemClicked(ActionEvent actionEvent) {
-        //show up the anchorPane "item_Pane"
+        //get information from text fields and date picker
+
+        //create new Item object
+        //add to list
     }
 
     public void editItemClicked(ActionEvent actionEvent) {
