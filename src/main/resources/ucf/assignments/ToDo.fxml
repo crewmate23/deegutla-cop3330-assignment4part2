@@ -24,7 +24,7 @@
                     </font>
                 </Text>
             <Text layoutX="676.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Sathwika Deegutla" />
-            <Label layoutX="183.0" layoutY="30.0" text="Label" underline="true">
+            <Label fx:id="fileLabel" layoutX="183.0" layoutY="30.0" text="Label" underline="true">
                <font>
                   <Font size="25.0" />
                </font>
@@ -64,7 +64,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Clear All">
+            <Button mnemonicParsing="false" onAction="#clearAllClicked" prefWidth="120.0" text="Clear All">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

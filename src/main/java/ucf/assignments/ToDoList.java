@@ -77,9 +77,10 @@ public class ToDoList {
     public void clearAll(){
         //removes every single item in the list
         //using enhanced for loop
-        for(Item i: items){
+        /*for(Item i: items){
             items.remove(i);
-        }
+        }*/
+        items.clear();
     }
 
 

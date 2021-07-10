@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
@@ -31,6 +32,7 @@ public class Controller implements Initializable {
 
     ObservableList<Item> obList = FXCollections.observableArrayList();
 
+    @FXML private Label fileLabel;
 
     //configure the table and table columns
     @FXML
@@ -80,6 +82,7 @@ public class Controller implements Initializable {
             }
         });
 
+        fileLabel.setText("");
 
         obList = FXCollections.observableArrayList(list.getAllItems());
 
@@ -100,8 +103,9 @@ public class Controller implements Initializable {
     //item options
     public void addItemClicked(ActionEvent actionEvent) {
         //create new Item object from information in text fields and date picker
-        System.out.println(descriptionTextField.getText());
-        System.out.println(dueDatePicker.getValue());
+        System.out.print("Adding item: ");
+        System.out.print(descriptionTextField.getText() + " ");
+        System.out.print(dueDatePicker.getValue() + "\n");
 
         //Item another = new Item("Cook", LocalDate.of(2021, Month.JULY, 25));
         //list.addItem(another);
@@ -117,6 +121,10 @@ public class Controller implements Initializable {
     }
 
     public void removeItemClicked(ActionEvent actionEvent){
+        System.out.print("Removing item: ");
+        System.out.print(descriptionTextField.getText() + " ");
+        System.out.print(dueDatePicker.getValue() + "\n");
+
         Item selectedItem;
 
         selectedItem = tableView.getSelectionModel().getSelectedItem();
@@ -131,9 +139,19 @@ public class Controller implements Initializable {
         clearField();
     }
 
+    public void clearAllClicked(ActionEvent actionEvent){
+
+        System.out.println("Clearing all");
+
+        list.clearAll();
+
+        //obList = FXCollections.observableArrayList(list.getAllItems());
+        //tableView.setItems(obList);
+        tableView.getItems().clear();
+    }
+
     public void selectedRow(){
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
-
         displayItem(selectedItem);
     }
 
