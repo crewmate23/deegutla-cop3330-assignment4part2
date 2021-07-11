@@ -35,6 +35,8 @@ public class Controller implements Initializable {
 
     @FXML private Label fileLabel;
 
+    @FXML private ComboBox<String> displayOptionsBox;
+
     //configure the table and table columns
     @FXML
     private TableView<Item> tableView;
@@ -45,7 +47,7 @@ public class Controller implements Initializable {
     private TableColumn<Item, LocalDate> dueDateColumn;
     @FXML
     //the checkbox used is awt (not javafx)
-    private TableColumn<Item, Checkbox> completedColumn;
+    private TableColumn<Item, CheckBox> completedColumn;
 
 
     //instance variables for text field and date picker
@@ -57,6 +59,14 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("description"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<Item, LocalDate>("dueDate"));
+        completedColumn.setCellValueFactory(new PropertyValueFactory<Item, CheckBox>("complete"));
+
+        displayOptionsBox.getItems().addAll(
+            "All Items",
+            "Incomplete Items",
+            "Completed Items"
+        );
+
 
         dueDatePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "yyyy-MM-dd";
@@ -98,6 +108,46 @@ public class Controller implements Initializable {
         //dueDateColumn.setCellFactory();
 
 
+    }
+
+    public void displayOptionsAction(ActionEvent actionEvent){
+        String selectedOption = displayOptionsBox.getValue();
+
+        if(selectedOption.equalsIgnoreCase("all items")){
+            System.out.println("All items displaying...");
+            displayAllItems();
+        }else if(selectedOption.equalsIgnoreCase("incomplete items")){
+            System.out.println("Incomplete items displaying...");
+            displayIncompleteItems();
+        }else if(selectedOption.equalsIgnoreCase("completed items")){
+            System.out.println("Completed items displaying...");
+            displayCompletedItems();
+        }
+
+    }
+
+    public void displayAllItems(){
+        obList = FXCollections.observableArrayList(list.getAllItems());
+        tableView.setItems(obList);
+        //tableView.refresh();
+    }
+
+    public void displayIncompleteItems(){
+        System.out.print(list.inCompleteItems());
+
+        obList = FXCollections.observableArrayList(list.inCompleteItems());
+
+        tableView.setItems(obList);
+        //tableView.refresh();
+    }
+
+    public void displayCompletedItems(){
+        System.out.print(list.completeItems());
+
+        obList = FXCollections.observableArrayList(list.completeItems());
+
+        tableView.setItems(obList);
+        //tableView.refresh();
     }
 
     //declare and initialize AllLists arraylist by calling it

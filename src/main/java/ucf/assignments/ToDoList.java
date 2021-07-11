@@ -5,7 +5,9 @@
 
 package ucf.assignments;
 
-import java.awt.*;
+import javafx.scene.control.CheckBox;
+
+import javafx.scene.control.CheckBox;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,8 +38,8 @@ public class ToDoList {
         //use by getComplete() in Item.java- which returns an item's CheckBox
         //use CheckBox getState() method, which returns a boolean
         for(Item i: items){
-            Checkbox temp = i.getComplete();
-            if(!temp.getState()){ //if the check box is off
+            CheckBox temp = i.getComplete();
+            if(!temp.isSelected()){ //if the check box is off
                 incompleteItems.add(i); //then add into the incomplete items arraylist
             }
         }
@@ -53,8 +55,8 @@ public class ToDoList {
         //use by getComplete() in Item.java- which returns an item's CheckBox
         //use CheckBox getState() method, which returns a boolean
         for(Item i: items){
-            Checkbox temp = i.getComplete();
-            if(temp.getState()){ //if the check box is on
+            CheckBox temp = i.getComplete();
+            if(temp.isSelected()){ //if the check box is on
                 completeItems.add(i); //then add into the incomplete items arraylist
             }
         }

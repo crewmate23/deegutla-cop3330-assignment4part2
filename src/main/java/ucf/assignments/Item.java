@@ -7,8 +7,8 @@ package ucf.assignments;
 
 //package for Date object
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.CheckBox;
 
-import java.awt.*;
 import java.time.LocalDate;
 
 public class Item {
@@ -22,7 +22,7 @@ public class Item {
 
     //Private CheckBox varibale for whether the item is finished
     //instead of a boolean use checkbox for each item, easier for javafx
-    private Checkbox complete;
+    private CheckBox complete;
 
     //constructor
     public Item(String description, LocalDate dueDate){
@@ -32,7 +32,7 @@ public class Item {
         this.dueDate = dueDate;
 
         //also initializes a new checkbox for an item
-        this.complete = new Checkbox();
+        this.complete = new CheckBox();
     }
 
     //getters methods
@@ -48,7 +48,7 @@ public class Item {
         return description.get();
     }
 
-    public Checkbox getComplete(){
+    public CheckBox getComplete(){
         //return the checkbox complete
         return complete;
     }
@@ -64,7 +64,7 @@ public class Item {
         this.dueDate = dueDate;
     }
 
-    public void setComplete(Checkbox complete){
+    public void setComplete(CheckBox complete){
         //set the complete to the checkbox parameter
         this.complete = complete;
     }

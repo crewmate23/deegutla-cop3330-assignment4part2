@@ -35,7 +35,7 @@
          <children>
             <TableView fx:id="tableView" onMouseClicked="#selectedRow" prefHeight="200.0" prefWidth="593.0">
               <columns>
-                <TableColumn fx:id="descriptionColumn" onEditCommit="#editDescription" prefWidth="275.0" sortable="false" text="Description" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="275.0" sortable="false" text="Description" />
                 <TableColumn fx:id="dueDateColumn" minWidth="0.0" prefWidth="196.0" text="Due Date" />
                   <TableColumn fx:id="completedColumn" prefWidth="114.0" text="Completed" />
               </columns>
@@ -78,7 +78,7 @@
       </HBox>
       <Button layoutX="660.0" layoutY="117.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Save" />
       <Button layoutX="660.0" layoutY="80.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Help" />
-      <ComboBox layoutX="630.0" layoutY="347.0" prefWidth="150.0" promptText="Display Options" />
+      <ComboBox fx:id="displayOptionsBox" layoutX="630.0" layoutY="347.0" onAction="#displayOptionsAction" prefWidth="150.0" promptText="Display Options" />
       <Button layoutX="660.0" layoutY="154.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Load" />
     </children>
 </AnchorPane>
