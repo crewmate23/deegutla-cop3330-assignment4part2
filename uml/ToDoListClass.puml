@@ -7,81 +7,109 @@ class App{
 }
 
 class Controller{
-    model: AllLists
+    model: ToDoList
+    obList: ObservableList<Item>
+    fileChooser: FileChooser
 
-    'save and load buttons
-    +saveListClicked((ActionEvent)
-    +saveAllClicked(ActionEvent)
-    +loadRecentClicked(ActionEvent)
-    +loadAllClicked(ActionEvent)
+    - fileLabel: Label
+    - fileBox: VBox
+    - displayOptionsBox: ComboBox<String>
+    - tableView: TableView<Item>
+    - decriptionColumn: TableColumn<Item, String>
+    - dueDateColumn: TableColumn<Item, LocalDate>
+    - compelteColumn: TableColumn<Item, CheckBox>
+    - descriptionTextField: TextField
+    - dueDatePicker: DatePicker
 
-    'item buttons
+    +initialize()
+
+    'item functions
     +addItemClicked(ActionEvent)
-    +saveItemClicked((ActionEvent)
+    +removeItemClicker(ActionEvent)
+    +clearAllClicked(ActionEvent)
     +editItemClicked(ActionEvent)
-    +deleteItemClicked(ActionEvent)
-    +itemFinishedSelected((ActionEvent)
 
-    'list buttons
-    +editListClicked(ActionEvent)
-    +deleteListClicked(ActionEvent)
-    +addListClicked(ActionEvent)
+    'displayOptions
+    +displayOptionsAction(ActionEvent)
+    +displayAllItems()
+    +displayIncompleteItems()
+    +displayCompletedItems()
+    +sortByDate()
 
-    'Display Options Selection
-    +allDisplaySelected(ActionEvent)
-    +completeDisplaySelected(ActionEvent)
-    +incompleteDisplaySelected(ActionEvent)
-    +displayItems((ArrayList<ToDoList>, ToDoList)
-    +displayLists(ArrayList<ToDoList>)
-}
+    'save
+    +saveBtnClicked(ActionEvent))
+    'load
+    +loadBtnClicked(ActionEvent))
+    'help
+    +helpBtnClicked(ActionEvent))
 
-class AllLists{
-    +lists: ArrayList<ToDoList>
-    -latestSave: ToDoList
-
-    +addToDoList(ToDoList)
-    +removeToDoList(ToDoList)
-    +saveAll()
-    +loadAll(): ArrayList<ToDoList>
-    +save(ToDoList)
-    +loadRecent(): ToDoList
-    +listExists(ToDoList): Boolean
-    +sort(ArrayList<ToDoList>): ArrayList<ToDoList>
+    'helpers
+    +selectedRow()
+    +displayItem(Item)
+    +clearField()
 }
 
 class ToDoList{
-    -title: String
-    -items: List<Item>
+    -items: ArrayList<Item>
 
-    +ToDoList(String, String, String)
-    +editTitle(String)
+    'constructor
+    +ToDoList()
+
+    'getters
+    +getAllItems(): ArrayList<Item>
+    +inCompleteItems(): ArrayList<Item>
+    +completeItems(): ArrayList<Item>
+
+    'setters
     +addItem(Item)
     +removeItem(Item)
-    +getTitle(): String
-    +getAllItems(ToDoList): ArrayList<Item>
-    +inCompleteItems(ToDoList): ArrayList<Item>
-    +completeItems(ToDoList): ArrayList<Item>
+    +clearAll()
+    +updateItem(Item, String, LocalDate)
+
+    'save
+    +save(File)
+    +load(File): ArrayList<Item>
+
+    -convertToDate(String): LocalDate
+    +itemExists(Item): Boolean --**
 }
 
 class Item{
-    -description: String
-    -date: String
-    -finished: Boolean
+    'private instance variables
+    -description: SimpleStringProperty
+    -dueDate: LocalDate
+    -complete: CheckBox
 
-    +Item(String, String)
-    -convertDate(): Date
-    +editDescription(String)
-    +editDate(String)
-    +editFinished(Boolean)
-    +getDate(): Date
+    'constructor
+    +Item(String, LocalDate)
+
+    'getters
+    +getDueDate(): LocalDate
     +getDescription(): String
-    +checkFinished(): Boolean
+    +getComplete(): CheckBox
+
+    'setters
+    +setDescription(String)
+    +setDueDate(LocalDate)
+    +setComplete(CheckBox)
 }
 
-org.javafx.Application <|-- App
+class HelpScreenController{
+    -closeBtn: Button
+    +closeBtnClicked((ActionEvent)
+}
+
+org.javafx.Application <|- App
 App -- Controller
-Controller *-> AllLists
-AllLists *--> ToDoList
+Controller *--> HelpScreenController
+Controller *-> ToDoList
 ToDoList *--> Item
+
+note "Integrates ToDo.fxml" as N1
+note "Integrates HelpScreen.fxml" as N2
+
+Controller .. N1
+Controller .. N2
+HelpScreenController . N2
 
 @enduml
