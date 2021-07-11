@@ -28,10 +28,7 @@ import javafx.util.StringConverter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
@@ -39,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Controller implements Initializable {
 
@@ -148,12 +146,15 @@ public class Controller implements Initializable {
             //sets a directory for future reference
             fileChooser.setInitialDirectory(file.getParentFile());
 
-            list.save(file);
+            if(file != null){
+               list.save(file);
+                /*PrintWriter printWriter = new PrintWriter(file);
+                printWriter.write("HELLOOOOO");
+                printWriter.close();*/
+            }
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            //list.save(file);
 
-            bw.write("HELOOOO TESTING");
-            bw.close();
 
         }catch (Exception ex){
             System.out.println("An error occurred.");
@@ -174,9 +175,12 @@ public class Controller implements Initializable {
             //sets a directory for future reference
             fileChooser.setInitialDirectory(file.getParentFile());
 
-            obList = FXCollections.observableArrayList(list.load(file));
-            sortByDate();
-            tableView.setItems(obList);
+            if(file != null){
+                obList = FXCollections.observableArrayList(list.load(file));
+                sortByDate();
+                tableView.setItems(obList);
+            }
+
 
         }catch (Exception ex){
             System.out.println("An error occurred.");
@@ -245,10 +249,19 @@ public class Controller implements Initializable {
         System.out.print(descriptionTextField.getText() + " ");
         System.out.print(dueDatePicker.getValue() + "\n");
 
+        String description = descriptionTextField.getText();
+        LocalDate dueDate = dueDatePicker.getValue();
         //Item another = new Item("Cook", LocalDate.of(2021, Month.JULY, 25));
         //list.addItem(another);
 
-        Item newItem = new Item(descriptionTextField.getText(), dueDatePicker.getValue());
+        if(descriptionTextField.getText().equals("")) {
+            description = "";
+        }
+        if(dueDatePicker.getValue().equals(null)){
+            dueDate = null;
+        }
+
+        Item newItem = new Item(description, dueDate);
         //add to list
         list.addItem(newItem);
 
@@ -309,7 +322,7 @@ public class Controller implements Initializable {
     }
 
     public void helpBtnClicked(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
+        /*FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("HelpScreen.fxml"));
 
         Parent helpScreenParent = loader.load();
@@ -317,9 +330,33 @@ public class Controller implements Initializable {
 
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         window.setScene(helpScreenScene);
-        window.show();
+        window.show();*/
+
+        Parent helpScreenParent = FXMLLoader.load(getClass().getResource("HelpScreen.fxml"));
+
+        Stage helpStage = new Stage();
+        helpStage.setTitle("Help");
+        helpStage.setScene(new Scene(helpScreenParent));
+        helpStage.show();
+
+       // ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
     }
 
+
+    /*Parent root;
+        try {
+        root = FXMLLoader.load(getClass().getClassLoader().getResource("path/to/other/view.fxml"), resources);
+        Stage stage = new Stage();
+        stage.setTitle("My New Stage Title");
+        stage.setScene(new Scene(root, 450, 450));
+        stage.show();
+        // Hide this current window (if this is what you want)
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+        catch (IOException e) {
+        e.printStackTrace();
+    }
+}*/
     public void selectedRow(){
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
         displayItem(selectedItem);

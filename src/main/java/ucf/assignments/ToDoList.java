@@ -114,7 +114,6 @@ public class ToDoList {
         //EXAMPLE OUTPUT
         //Description,Due Date,Completed
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileDirectory));
@@ -126,17 +125,24 @@ public class ToDoList {
             bw.write("Completed");
             bw.write("\n");
 
-            for(Item item: items){
+            for (Item item: items) {
+
+                System.out.print("Adding item to file: ");
+                System.out.print(item.getDescription());
                 bw.write(item.getDescription());
                 bw.write(",");
-                bw.write(dateFormat.format(item.getDueDate()));
+
+                String date = item.getDueDate().toString();
+                System.out.print(date+"\n");
+                bw.write(date);
                 bw.write(",");
+
+
                 if(item.getComplete().isSelected()){
-                    bw.write("yes");
+                    bw.write("yes\n");
                 }else{
-                    bw.write("no");
+                    bw.write("no\n");
                 }
-                bw.write("\n");
             }
 
             bw.close();
@@ -159,14 +165,16 @@ public class ToDoList {
             BufferedReader br = new BufferedReader(new FileReader(fileDirectory));
 
             String line = "";
+            line = br.readLine(); //ignores the titles
             while((line = br.readLine()) != null){
                 String[] values = line.split(",");
 
+                System.out.println(values);
                 //convert from string to date
                 Item item = new Item(values[0], convertToDate(values[1]));
                 CheckBox complete = new CheckBox();
 
-                if(values[3].equalsIgnoreCase("yes")){
+                if(values[2].equalsIgnoreCase("yes")){
                     complete.setSelected(true);
                 }else{
                     complete.setSelected(false);
@@ -177,6 +185,7 @@ public class ToDoList {
                 fileItems.add(item);
             }
 
+            items = fileItems;
             //br.close();
 
         } catch (FileNotFoundException e) {
@@ -189,10 +198,12 @@ public class ToDoList {
     }
 
     private LocalDate convertToDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         //convert String to LocalDate
         LocalDate localDate = LocalDate.parse(date, formatter);
+
+        System.out.println(localDate);
 
         return localDate;
     }
