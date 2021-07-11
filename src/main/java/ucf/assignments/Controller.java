@@ -17,9 +17,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -332,14 +334,23 @@ public class Controller implements Initializable {
         window.setScene(helpScreenScene);
         window.show();*/
 
+        //open a new window
         Parent helpScreenParent = FXMLLoader.load(getClass().getResource("HelpScreen.fxml"));
+
+        ScrollPane sp = new ScrollPane();
+        sp.setContent(helpScreenParent);
+
+
+        /*BorderPane bp = new BorderPane();
+        bp.setLeft(sp);*/
 
         Stage helpStage = new Stage();
         helpStage.setTitle("Help");
-        helpStage.setScene(new Scene(helpScreenParent));
+        helpStage.setScene(new Scene(sp, 720, 500));
         helpStage.show();
 
-       // ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+        //don't hide existing screen
+        //((Node) (actionEvent.getSource())).getScene().getWindow().hide();
     }
 
 
