@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -96,7 +97,7 @@ public class Controller implements Initializable {
         fileLabel.setText("");
 
         obList = FXCollections.observableArrayList(list.getAllItems());
-
+        sortByDate();
         tableView.setItems(obList);
 
         //allows to select one row at a time from the table for editing or deleting purposes
@@ -128,6 +129,7 @@ public class Controller implements Initializable {
 
     public void displayAllItems(){
         obList = FXCollections.observableArrayList(list.getAllItems());
+        sortByDate();
         tableView.setItems(obList);
         //tableView.refresh();
     }
@@ -136,7 +138,7 @@ public class Controller implements Initializable {
         System.out.print(list.inCompleteItems());
 
         obList = FXCollections.observableArrayList(list.inCompleteItems());
-
+        sortByDate();
         tableView.setItems(obList);
         //tableView.refresh();
     }
@@ -145,9 +147,19 @@ public class Controller implements Initializable {
         System.out.print(list.completeItems());
 
         obList = FXCollections.observableArrayList(list.completeItems());
-
+        sortByDate();
         tableView.setItems(obList);
         //tableView.refresh();
+    }
+
+    public void sortByDate(){
+
+        FXCollections.sort(obList, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o1.getDueDate().compareTo(o2.getDueDate());
+            }
+        });
     }
 
     //declare and initialize AllLists arraylist by calling it
@@ -171,6 +183,8 @@ public class Controller implements Initializable {
         //ObservableList<Item> items = FXCollections.observableArrayList(list.getAllItems());
         //tableView.setItems(items);
         tableView.getItems().add(newItem);
+        sortByDate();
+        tableView.refresh();
         clearField();
     }
 
@@ -186,6 +200,9 @@ public class Controller implements Initializable {
 
         list.removeItem(selectedItem);
         tableView.getItems().remove(selectedItem);
+
+        sortByDate();
+        tableView.refresh();
 
         clearField();
     }
@@ -213,8 +230,9 @@ public class Controller implements Initializable {
         LocalDate newDueDate = dueDatePicker.getValue();
 
         list.updateItem(selectedItem, newDescription, newDueDate);
-
+        sortByDate();
         tableView.refresh();
+
         clearField();
     }
 
