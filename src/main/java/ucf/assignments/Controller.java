@@ -10,15 +10,28 @@ import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.StringConverter;
 
+import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
@@ -35,6 +48,9 @@ public class Controller implements Initializable {
     ObservableList<Item> obList = FXCollections.observableArrayList();
 
     @FXML private Label fileLabel;
+    @FXML private VBox fileBox;
+
+    FileChooser fileChooser = new FileChooser();
 
     @FXML private ComboBox<String> displayOptionsBox;
 
@@ -68,6 +84,12 @@ public class Controller implements Initializable {
             "Completed Items"
         );
 
+        //create a folder on desktop for to do lists
+        File newDirectory = new File("/Users/sathwika/Desktop/ToDo_Deegutla");
+        newDirectory.mkdirs();
+
+        //initialize the directory for file chooser
+        fileChooser.setInitialDirectory(newDirectory);
 
         dueDatePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "yyyy-MM-dd";
@@ -109,6 +131,56 @@ public class Controller implements Initializable {
         //dueDateColumn.setCellFactory();
 
 
+    }
+
+    public void saveBtnClicked(ActionEvent actionEvent){
+
+        Window stage = fileBox.getScene().getWindow();
+
+        fileChooser.setTitle("Save Dialog");
+        fileChooser.setInitialFileName("ToDoList");
+
+        //only accept csv files
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("csv file", "*.csv"));
+
+        try {
+            File file = fileChooser.showSaveDialog(stage);
+            //sets a directory for future reference
+            fileChooser.setInitialDirectory(file.getParentFile());
+
+            list.save(file);
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+
+            bw.write("HELOOOO TESTING");
+            bw.close();
+
+        }catch (Exception ex){
+            System.out.println("An error occurred.");
+        }
+    }
+
+    public void loadBtnClicked(ActionEvent actionEvent){
+
+        Window stage = fileBox.getScene().getWindow();
+
+        fileChooser.setTitle("Load Dialog");
+
+        //only accept csv files
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("csv file", "*.csv"));
+
+        try {
+            File file = fileChooser.showOpenDialog(stage);
+            //sets a directory for future reference
+            fileChooser.setInitialDirectory(file.getParentFile());
+
+            obList = FXCollections.observableArrayList(list.load(file));
+            sortByDate();
+            tableView.setItems(obList);
+
+        }catch (Exception ex){
+            System.out.println("An error occurred.");
+        }
     }
 
     public void displayOptionsAction(ActionEvent actionEvent){
@@ -236,6 +308,18 @@ public class Controller implements Initializable {
         clearField();
     }
 
+    public void helpBtnClicked(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("HelpScreen.fxml"));
+
+        Parent helpScreenParent = loader.load();
+        Scene helpScreenScene = new Scene(helpScreenParent);
+
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        window.setScene(helpScreenScene);
+        window.show();
+    }
+
     public void selectedRow(){
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
         displayItem(selectedItem);
@@ -252,6 +336,9 @@ public class Controller implements Initializable {
         dueDatePicker.setValue(null);
     }
 
+    /*public void fieldsClicked(){
+        displayAllItems();
+    }*/
     /*public void editItemClicked(ActionEvent actionEvent) {
         //get the ToDoList list and Item item objects from which button clicked
         //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist

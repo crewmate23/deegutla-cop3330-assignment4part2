@@ -8,8 +8,12 @@ package ucf.assignments;
 import javafx.scene.control.CheckBox;
 
 import javafx.scene.control.CheckBox;
-import java.io.File;
+
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ToDoList {
@@ -106,10 +110,41 @@ public class ToDoList {
 
     public void save(File fileDirectory){
         //gets a file or file directory
-        //saves this arraylist of items into file as tabular format
+        //saves this arraylist of items into file as csv format
         //EXAMPLE OUTPUT
-        //Description       |Due Date       |Completed
-        //------------------|---------------|-----------
+        //Description,Due Date,Completed
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileDirectory));
+
+            bw.write("Description");
+            bw.write(",");
+            bw.write("DueDate");
+            bw.write(",");
+            bw.write("Completed");
+            bw.write("\n");
+
+            for(Item item: items){
+                bw.write(item.getDescription());
+                bw.write(",");
+                bw.write(dateFormat.format(item.getDueDate()));
+                bw.write(",");
+                if(item.getComplete().isSelected()){
+                    bw.write("yes");
+                }else{
+                    bw.write("no");
+                }
+                bw.write("\n");
+            }
+
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public ArrayList<Item> load(File fileDirectory){
@@ -118,9 +153,49 @@ public class ToDoList {
         //reads the file in tabular format
         //assigns new item into the loadItems
 
-        return null;
+        ArrayList<Item> fileItems = new ArrayList<>();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileDirectory));
+
+            String line = "";
+            while((line = br.readLine()) != null){
+                String[] values = line.split(",");
+
+                //convert from string to date
+                Item item = new Item(values[0], convertToDate(values[1]));
+                CheckBox complete = new CheckBox();
+
+                if(values[3].equalsIgnoreCase("yes")){
+                    complete.setSelected(true);
+                }else{
+                    complete.setSelected(false);
+                }
+
+                item.setComplete(complete);
+
+                fileItems.add(item);
+            }
+
+            //br.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fileItems;
     }
 
+    private LocalDate convertToDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+
+        //convert String to LocalDate
+        LocalDate localDate = LocalDate.parse(date, formatter);
+
+        return localDate;
+    }
 
     /* NOT NEEDED METHODS ANYMORE
     //constructor

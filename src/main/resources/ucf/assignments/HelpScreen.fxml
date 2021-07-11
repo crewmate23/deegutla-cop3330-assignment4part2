@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="685.0" prefWidth="737.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.HelpScreenController">
+   <children>
+      <AnchorPane prefHeight="75.0" prefWidth="737.0" style="-fx-background-color: #68f28d#68f28d;">
+         <children>
+            <Text layoutX="612.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Sathwika Deegutla" />
+            <Text layoutX="21.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HELP SCREEN">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <Text layoutX="24.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How to use &quot;To-Do&quot; Application:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <ScrollPane layoutX="24.0" layoutY="134.0" prefHeight="65.0" prefWidth="691.0">
+         <content>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;- To add an item, fill in the description text field and select a due date from date picker for the item.&#10;&#9;- Then, click the button &quot;Add Item&quot;&#10;&#9;- The item will be added to the table display" wrappingWidth="689.96484375">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="24.0" layoutY="222.0" prefHeight="65.0" prefWidth="691.0">
+         <content>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;- To edit an item, select the item from the displayed table by clicking it.&#10;&#9;- Then, the item's current description and due date shows up in the their respective text field and date picker.&#9;&#9;&#10;&#9;- If thats the item you want to edit, change the description and/or due date in their fields.&#10;&#9;- Then, click the button &quot;Edit Item&quot; to update the item's values.&#10;&#9;- The item should be updated with new values in table." wrappingWidth="685.96484375">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="24.0" layoutY="433.0" prefHeight="65.0" prefWidth="691.0">
+         <content>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;- To remove an item, select the item from the displayed table by clicking it.&#10;&#9;- Then, the item's current description and due date shows up in the their respective text field and date picker.&#10;&#9;- If thats the item you want to delete, click the button &quot;Remove Item&quot;&#10;&#9;- The item should be removed from the table." wrappingWidth="685.96484375">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="24.0" layoutY="521.0" prefHeight="30.0" prefWidth="691.0">
+         <content>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;- To clear all items, simply click the button &quot;Clear All.&quot;&#10;&#9;- The whole table will be cleared." wrappingWidth="685.96484375">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="24.0" layoutY="313.0" prefHeight="16.0" prefWidth="691.0">
+         <content>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;- To mark an item as completed, simply check the check box in the completed column in the table for an item" wrappingWidth="685.96484375">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="24.0" layoutY="373.0" prefHeight="24.0" prefWidth="691.0">
+         <content>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;- To mark an item as incomplete, simply uncheck the check box in the completed column in the table for an item" wrappingWidth="685.96484375">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </content>
+      </ScrollPane>
+      <Text fill="#26a2dc" layoutX="23.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Add an item">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#26a2dc" layoutX="24.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Edit an item">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#26a2dc" layoutX="24.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Mark an item as complete">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#26a2dc" layoutX="24.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Mark an item as incomplete">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#26a2dc" layoutX="24.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Remove an item">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#26a2dc" layoutX="24.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Clear all items">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="RED" layoutX="24.0" layoutY="582.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Once you click &quot;Remove Item&quot; or &quot;Clear All&quot; button, the item(s) will be permanently deleted. Make sure before removing item(s)." wrappingWidth="691.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#26a2dc" layoutX="30.0" layoutY="626.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Change display for items">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Button layoutX="621.0" layoutY="645.0" mnemonicParsing="false" onAction="#goBackBtnClicked" prefHeight="26.0" prefWidth="94.0" text="Go Back" />
+   </children>
+</AnchorPane>
