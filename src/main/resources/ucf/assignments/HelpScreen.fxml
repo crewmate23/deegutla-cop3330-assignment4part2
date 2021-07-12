@@ -10,10 +10,14 @@
    <children>
       <AnchorPane layoutX="-6.0" prefHeight="75.0" prefWidth="710.0" style="-fx-background-color: #68f28d#68f28d;">
          <children>
-            <Text layoutX="587.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Sathwika Deegutla" />
             <Text layoutX="21.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HELP SCREEN">
                <font>
                   <Font size="40.0" />
+               </font>
+            </Text>
+            <Text layoutX="521.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;In dedication to rey&quot;">
+               <font>
+                  <Font size="20.0" />
                </font>
             </Text>
          </children>
