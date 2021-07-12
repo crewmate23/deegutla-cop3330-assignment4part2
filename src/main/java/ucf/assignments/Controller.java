@@ -84,7 +84,10 @@ public class Controller implements Initializable {
         );
 
         //create a folder on desktop for to do lists
-        File newDirectory = new File("/Users/sathwika/Desktop/ToDo_Deegutla");
+        String currentUser = System.getProperty("user.home");
+        String directory = currentUser + File.separator + "Desktop";
+        String newFolder = directory + File.separator + "ToDo_Deegutla";
+        File newDirectory = new File(newFolder);
         newDirectory.mkdirs();
 
         //initialize the directory for file chooser
