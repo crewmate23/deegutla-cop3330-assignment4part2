@@ -28,6 +28,7 @@ import javafx.util.StringConverter;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.ResourceBundle;
@@ -136,8 +137,12 @@ public class Controller implements Initializable {
         //shows a new window for saving the file
         Window stage = fileBox.getScene().getWindow();
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH.mm.ss");
+        LocalDateTime now = LocalDateTime.now();
+        String date = dtf.format(now);
+
         fileChooser.setTitle("Save Dialog");
-        fileChooser.setInitialFileName("ToDoList");
+        fileChooser.setInitialFileName("ToDoList_" + date);
 
         //only accept csv files
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("csv file", "*.csv"));
