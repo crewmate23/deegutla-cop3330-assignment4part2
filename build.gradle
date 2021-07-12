@@ -22,7 +22,7 @@ test {
 
 javafx {
     version = "16"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing', 'javafx.base' ]
 }
 
 application {

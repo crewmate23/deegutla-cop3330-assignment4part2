@@ -128,7 +128,7 @@ public class ToDoList {
             for (Item item: items) {
 
                 System.out.print("Adding item to file: ");
-                System.out.print(item.getDescription());
+                System.out.print(item.getDescription() + ", ");
                 bw.write(item.getDescription());
                 bw.write(",");
 
