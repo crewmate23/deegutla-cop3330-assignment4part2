@@ -7,18 +7,13 @@ package ucf.assignments;
 
 import javafx.scene.control.CheckBox;
 
-import javafx.scene.control.CheckBox;
-
 import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ToDoList {
 
-    //NOT NEEDED - Private String variable for title
     //Private List<Item> for items in the list
     private ArrayList<Item> items;
 
@@ -40,7 +35,7 @@ public class ToDoList {
 
         //loop through items and find if incomplete
         //use by getComplete() in Item.java- which returns an item's CheckBox
-        //use CheckBox getState() method, which returns a boolean
+        //use CheckBox isSelected() method, which returns a boolean
         for(Item i: items){
             CheckBox temp = i.getComplete();
             if(!temp.isSelected()){ //if the check box is off
@@ -57,7 +52,7 @@ public class ToDoList {
 
         //loop through items and find if complete
         //use by getComplete() in Item.java- which returns an item's CheckBox
-        //use CheckBox getState() method, which returns a boolean
+        //use CheckBox isSelected() method, which returns a boolean
         for(Item i: items){
             CheckBox temp = i.getComplete();
             if(temp.isSelected()){ //if the check box is on
@@ -82,24 +77,23 @@ public class ToDoList {
     }
 
     public void clearAll(){
-        //removes every single item in the list
-        //using enhanced for loop
-        /*for(Item i: items){
-            items.remove(i);
-        }*/
+        //use arraylist method clear to remove all items
         items.clear();
     }
 
     public void updateItem(Item item, String newDescription, LocalDate newDueDate){
+        //get the item object, and its new description and date object
+        //using item's setter methods, assign them respectively
         item.setDescription(newDescription);
         item.setDueDate(newDueDate);
     }
 
 
-    public Boolean itemExists(Item findItem){
+    public Boolean itemExists(String findItem){
+        //check if the items exists already using description
         //run through the loop and find if the item exists
         for(Item i : items){
-            if(i.equals(findItem)){
+            if(i.getDescription().equals(findItem)){
                 return true; //item found return true
             }
         }
@@ -116,8 +110,10 @@ public class ToDoList {
 
 
         try {
+            //use a bufferedwriter to write into the file
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileDirectory));
 
+            //write the headings
             bw.write("Description");
             bw.write(",");
             bw.write("DueDate");
@@ -125,26 +121,35 @@ public class ToDoList {
             bw.write("Completed");
             bw.write("\n");
 
+            //loop through every time and write into file
             for (Item item: items) {
-
+                //console message
                 System.out.print("Adding item to file: ");
                 System.out.print(item.getDescription() + ", ");
+
+                //write description
                 bw.write(item.getDescription());
                 bw.write(",");
 
+                //first convert date object into string using toString()
                 String date = item.getDueDate().toString();
+
+                //console message
                 System.out.print(date+"\n");
+
+                //write date - string
                 bw.write(date);
                 bw.write(",");
 
-
+                //check if checkbox is checked or unchecked
                 if(item.getComplete().isSelected()){
-                    bw.write("yes\n");
+                    bw.write("yes\n"); //if checked, write "yes" into file
                 }else{
-                    bw.write("no\n");
+                    bw.write("no\n"); //else, write "no" into file
                 }
             }
 
+            //close writer
             bw.close();
 
         } catch (IOException e) {
@@ -154,39 +159,46 @@ public class ToDoList {
     }
 
     public ArrayList<Item> load(File fileDirectory){
-        //creates and initializes new arraylist - loadItems
-        //gets a file or file directory, ".txt" file
-        //reads the file in tabular format
-        //assigns new item into the loadItems
+        //creates and initializes new arraylist - fileItems
+        //gets a file or file directory, ".csv" file
+        //reads the file in csv format
+        //assigns new item into the fileItems
 
         ArrayList<Item> fileItems = new ArrayList<>();
 
         try {
+            //use a bufferedreader for reading the csv file
             BufferedReader br = new BufferedReader(new FileReader(fileDirectory));
 
             String line = "";
-            line = br.readLine(); //ignores the titles
+            line = br.readLine(); //ignores the headings
             while((line = br.readLine()) != null){
-                String[] values = line.split(",");
+                String[] values = line.split(","); //to separate values
 
-                System.out.println(values);
+                System.out.println(values); //console message
+
                 //convert from string to date
                 Item item = new Item(values[0], convertToDate(values[1]));
+
+                //create a temp checkbox to add to an item
                 CheckBox complete = new CheckBox();
 
+                //check if the text is "yes" or "no" and set checkbox accordingly
                 if(values[2].equalsIgnoreCase("yes")){
                     complete.setSelected(true);
                 }else{
                     complete.setSelected(false);
                 }
 
+                //add the checkbox to the item
                 item.setComplete(complete);
 
+                //add into fileItems
                 fileItems.add(item);
             }
 
+            //also add into this list items
             items = fileItems;
-            //br.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -194,61 +206,21 @@ public class ToDoList {
             e.printStackTrace();
         }
 
-        return fileItems;
+        return fileItems; //return arraylist to display on screen
     }
 
+    //helps convert string to formatted date object
     private LocalDate convertToDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //format
 
         //convert String to LocalDate
         LocalDate localDate = LocalDate.parse(date, formatter);
 
-        System.out.println(localDate);
+        System.out.println(localDate); //console message
 
         return localDate;
     }
 
-    /* NOT NEEDED METHODS ANYMORE
-    //constructor
-    public ToDoList(String title){
-        //sets this title to the given parameter
-    }
-
-    public void editTitle(String title){
-        //updates this title to the new title from the parameter
-    }
-
-    public String getTitle(){
-        //return the title value of the list
-        return null; //right now null
-    }
-
-     public ArrayList<Item> getAllItems(ToDoList list){
-        //declare a new arraylist of Item objects - allItems
-        //loop through ToDoList 'list' parameter and inside that loop through 'items'
-        //add each item to the allItems arraylist
-        //return the ArrayList<Item> 'allItems'
-        return null; //right now null
-    }
-
-    public ArrayList<Item> inCompleteItems(ToDoList list){
-        //declare a new arraylist of Item objects - inCompleteItems
-        //loop through ToDoList 'list' parameter and inside that loop through 'items'
-        //check whether that item is finished by calling Item's checkFinished() method
-        //if they are not, add that item to inComplete items
-        //return the inCompleteItems
-        return null; //right now null
-    }
-
-    public ArrayList<Item> completeItems(ToDoList list){
-        //declare a new arraylist of Item objects - completeItems
-        //loop through arraylist 'lists' parameter and inside that loop through 'items'
-        //check whether that item is finished by calling Item's checkFinished() method
-        //if they are, add that item to completeItems
-        //return the completeItems
-        return null; //right now null
-    }
-     */
 }
 
 

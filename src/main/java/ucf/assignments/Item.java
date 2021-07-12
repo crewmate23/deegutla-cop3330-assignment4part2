@@ -20,7 +20,7 @@ public class Item {
     //Private String variable for date
     private LocalDate dueDate;
 
-    //Private CheckBox varibale for whether the item is finished
+    //Private JavaFX CheckBox varibale for whether the item is finished
     //instead of a boolean use checkbox for each item, easier for javafx
     private CheckBox complete;
 
@@ -37,8 +37,7 @@ public class Item {
 
     //getters methods
     public LocalDate getDueDate(){
-        //convert to Date object and return it
-        //returns the Date object from convertDate()
+        //returns the Date object
         return dueDate;
     }
 
@@ -56,6 +55,7 @@ public class Item {
     //setters methods
     public void setDescription(String description){
         //updates this description to the new description from parameter
+        //convert from string to simplestringproperty
         this.description = new SimpleStringProperty(description);
     }
 
@@ -68,28 +68,6 @@ public class Item {
         //set the complete to the checkbox parameter
         this.complete = complete;
     }
-
-
-    /*
-    NOT NEEDED METHODS ANYMORE
-
-    private Date convertDate(){
-        //initialize new Date object
-        //converts the String data of date into that Date object (for comparison)
-
-        //returns converted Date object
-        return null; //right now null literal
-    }
-
-    public void editFinished(Boolean finish){
-        //sets whether the item is finished or not
-
-    }
-
-    public Boolean checkFinished() {
-        //returns the boolean value of finished (for display options)
-        return false; //right now false
-    }*/
 
 }
 

@@ -1,5 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 4 Solution
+ *  Copyright 2021 Sathwika Deegutla
+ */
 package ucf.assignments;
-
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.CheckBox;
@@ -9,12 +12,12 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ToDoListTest {
 
+    //global declaraiton of todolist object
     private ToDoList list;
 
     //create a panel for testing the list and item object
@@ -23,79 +26,108 @@ class ToDoListTest {
 
     @Test
     void addItem_Test() {
+        //test addItem()
+        //initialize ToDoList object
         list = new ToDoList();
 
+        //create a expected arraylist for comparing
         ArrayList<Item> expectedItems = new ArrayList<>();
 
+        //create dummy data of item's objects
         Item item1 = new Item("Cook", LocalDate.of(2021, Month.JULY, 12));
         Item item2 = new Item("Take Dog to walk", LocalDate.of(2021, Month.JULY, 13));
         Item item3 = new Item("OOP Assignment", LocalDate.of(2021, Month.JULY, 11));
 
+        //add the dummy date into ToDoList object using addItem() method
         list.addItem(item1);
         list.addItem(item2);
         list.addItem(item3);
 
+        //add dummy date into expected arraylist
         expectedItems.add(item1);
         expectedItems.add(item2);
         expectedItems.add(item3);
 
+        //compare both by converting to arrays and check if they are equal
         assertArrayEquals(expectedItems.toArray(), list.getAllItems().toArray());
     }
 
     @Test
     void removeItem_Test(){
+        //test removeItem()
+        //initialize ToDoList object
         list = new ToDoList();
 
+        //also create an expected arraylist for comparing
         ArrayList<Item> expectedItems = new ArrayList<>();
 
+        //create dummy data of item's objects
         Item item1 = new Item("Cook", LocalDate.of(2021, Month.JULY, 12));
         Item item2 = new Item("Take Dog to walk", LocalDate.of(2021, Month.JULY, 13));
         Item item3 = new Item("OOP Assignment", LocalDate.of(2021, Month.JULY, 11));
 
+        //add the dummy data into ToDoList object using addItem() method
         list.addItem(item1);
         list.addItem(item2);
         list.addItem(item3);
 
+        //also add into the expeceted arraylist
         expectedItems.add(item1);
         expectedItems.add(item2);
         expectedItems.add(item3);
 
+        //call removeItem() on dummy item
         list.removeItem(item3);
 
+        //call remove on expeceted arraylist on the same dummy item
         expectedItems.remove(item3);
 
+        //check if both arraylist are equal by converting to arrays
         assertArrayEquals(expectedItems.toArray(), list.getAllItems().toArray());
     }
 
     @Test
     void removeItem_Test_False(){
+        //check if removeItem() works
+
+        //initialize ToDoList object
         list = new ToDoList();
 
+        //also create a expected arraylist for comparing
         ArrayList<Item> expectedItems = new ArrayList<>();
 
+        //create dummy data of item's objects
         Item item1 = new Item("Cook", LocalDate.of(2021, Month.JULY, 12));
         Item item2 = new Item("Take Dog to walk", LocalDate.of(2021, Month.JULY, 13));
         Item item3 = new Item("OOP Assignment", LocalDate.of(2021, Month.JULY, 11));
 
+        //add the dummy items into ToDoList object
         list.addItem(item1);
         list.addItem(item2);
         list.addItem(item3);
 
+        //also add into expected arraylist
         expectedItems.add(item1);
         expectedItems.add(item2);
         expectedItems.add(item3);
 
-       list.removeItem(item1);
+        //remove a random item from dummy data
+        list.removeItem(item1);
 
+        //remove a different item
         expectedItems.remove(item3);
 
+        //should be false, since they both removed a different item
         Boolean check = (list.getAllItems()).equals(expectedItems);
 
+        //check if it is false
         assertFalse(check);
     }
 
     @Test
     void clearAll_Test(){
+        //clearAll()
+        //initialize ToDoList object
         list = new ToDoList();
 
         ArrayList<Item> expectedItems = new ArrayList<>();

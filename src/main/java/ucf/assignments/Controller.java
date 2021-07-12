@@ -6,13 +6,11 @@
 package ucf.assignments;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,50 +18,48 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.StringConverter;
 
-import javax.swing.*;
-import java.awt.*;
+
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 public class Controller implements Initializable {
 
-    //create a list object
+    //create a list object - a model
     ToDoList list = new ToDoList();
 
+    //global observable list, easier when displaying in the table
     ObservableList<Item> obList = FXCollections.observableArrayList();
 
+    //label that show file name, when loaded
     @FXML private Label fileLabel;
+
+    //vertical box includes "save" and "load" buttons
     @FXML private VBox fileBox;
 
+    //global fileChooser for "save" and "load"
     FileChooser fileChooser = new FileChooser();
 
+    //dropdown combobox for display options
     @FXML private ComboBox<String> displayOptionsBox;
 
     //configure the table and table columns
     @FXML
     private TableView<Item> tableView;
-
     @FXML
     private TableColumn<Item, String> descriptionColumn;
     @FXML
     private TableColumn<Item, LocalDate> dueDateColumn;
     @FXML
-    //the checkbox used is awt (not javafx)
     private TableColumn<Item, CheckBox> completedColumn;
 
 
@@ -72,12 +68,15 @@ public class Controller implements Initializable {
     @FXML private DatePicker dueDatePicker;
 
 
+    //runs when the stage is launched
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //sets cell value factory to Item's values respectively
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("description"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<Item, LocalDate>("dueDate"));
         completedColumn.setCellValueFactory(new PropertyValueFactory<Item, CheckBox>("complete"));
 
+        //adds options to display options
         displayOptionsBox.getItems().addAll(
             "All Items",
             "Incomplete Items",
@@ -91,6 +90,7 @@ public class Controller implements Initializable {
         //initialize the directory for file chooser
         fileChooser.setInitialDirectory(newDirectory);
 
+        //converts date picker format to YYYY-MM-DD
         dueDatePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "yyyy-MM-dd";
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
@@ -116,25 +116,21 @@ public class Controller implements Initializable {
             }
         });
 
+        //initially set file label to null, not opened anything yet
         fileLabel.setText("");
 
+        //initializes and converts Arraylist to Observable list for display
         obList = FXCollections.observableArrayList(list.getAllItems());
-        sortByDate();
-        tableView.setItems(obList);
+        sortByDate(); //sort method
+        tableView.setItems(obList); //displays
 
         //allows to select one row at a time from the table for editing or deleting purposes
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-        //update the table to allow the fields to be editable
-        //tableView.setEditable(true);
-        //descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //dueDateColumn.setCellFactory();
-
-
     }
 
+    //save
     public void saveBtnClicked(ActionEvent actionEvent){
-
+        //shows a new window for saving the file
         Window stage = fileBox.getScene().getWindow();
 
         fileChooser.setTitle("Save Dialog");
@@ -149,22 +145,16 @@ public class Controller implements Initializable {
             fileChooser.setInitialDirectory(file.getParentFile());
 
             if(file != null){
-               list.save(file);
-                /*PrintWriter printWriter = new PrintWriter(file);
-                printWriter.write("HELLOOOOO");
-                printWriter.close();*/
+               list.save(file); //calls list's save method to write into that file
             }
-
-            //list.save(file);
-
-
         }catch (Exception ex){
             System.out.println("An error occurred.");
         }
     }
 
+    //load
     public void loadBtnClicked(ActionEvent actionEvent){
-
+        //shows a new window for opening an existing todo
         Window stage = fileBox.getScene().getWindow();
 
         fileChooser.setTitle("Load Dialog");
@@ -177,60 +167,79 @@ public class Controller implements Initializable {
             //sets a directory for future reference
             fileChooser.setInitialDirectory(file.getParentFile());
 
+            //gets file name and shows in the todo application
+            fileLabel.setText(file.getName());
+
             if(file != null){
+                //call list's load to get arraylist of items
+                //convert to observable list and sort by date and display in the table
                 obList = FXCollections.observableArrayList(list.load(file));
                 sortByDate();
                 tableView.setItems(obList);
             }
-
-
         }catch (Exception ex){
             System.out.println("An error occurred.");
         }
     }
 
+
+    //display options
     public void displayOptionsAction(ActionEvent actionEvent){
+        //get selected option from combobox
         String selectedOption = displayOptionsBox.getValue();
 
+        //check which option selected and call that method respectively
         if(selectedOption.equalsIgnoreCase("all items")){
-            System.out.println("All items displaying...");
+            System.out.println("All items displaying..."); //console message
             displayAllItems();
         }else if(selectedOption.equalsIgnoreCase("incomplete items")){
-            System.out.println("Incomplete items displaying...");
+            System.out.println("Incomplete items displaying..."); //console message
             displayIncompleteItems();
         }else if(selectedOption.equalsIgnoreCase("completed items")){
-            System.out.println("Completed items displaying...");
+            System.out.println("Completed items displaying..."); //console message
             displayCompletedItems();
         }
 
     }
 
     public void displayAllItems(){
+        //call list's getAllItems()
+        //convert to observable list
+        //sort by date
+        //display on the table
         obList = FXCollections.observableArrayList(list.getAllItems());
         sortByDate();
         tableView.setItems(obList);
-        //tableView.refresh();
     }
 
     public void displayIncompleteItems(){
-        System.out.print(list.inCompleteItems());
+        System.out.print(list.inCompleteItems()); //console message
 
+        //call list's inCompleteItems()
+        //convert to observable list
+        //sort by date
+        //display on the table
         obList = FXCollections.observableArrayList(list.inCompleteItems());
         sortByDate();
         tableView.setItems(obList);
-        //tableView.refresh();
     }
 
     public void displayCompletedItems(){
-        System.out.print(list.completeItems());
+        System.out.print(list.completeItems()); //console message
 
+        //call list's completeItems()
+        //convert to observable list
+        //sort by date
+        //display on the table
         obList = FXCollections.observableArrayList(list.completeItems());
         sortByDate();
         tableView.setItems(obList);
-        //tableView.refresh();
     }
 
     public void sortByDate(){
+
+        //sort the Observable list using a comparator
+        //compares date objects and sorts
 
         FXCollections.sort(obList, new Comparator<Item>() {
             @Override
@@ -240,264 +249,135 @@ public class Controller implements Initializable {
         });
     }
 
-    //declare and initialize AllLists arraylist by calling it
-    //utilize and interpret AllLists methods according to eventhandlers
-
-    //event handlers code
     //item options
     public void addItemClicked(ActionEvent actionEvent) {
-        //create new Item object from information in text fields and date picker
+        //console message
         System.out.print("Adding item: ");
         System.out.print(descriptionTextField.getText() + " ");
         System.out.print(dueDatePicker.getValue() + "\n");
 
-        String description = descriptionTextField.getText();
-        LocalDate dueDate = dueDatePicker.getValue();
-        //Item another = new Item("Cook", LocalDate.of(2021, Month.JULY, 25));
-        //list.addItem(another);
+        //check if the text field or date picker are left blank, if so show error
+        if(descriptionTextField.getText().equals("") || dueDatePicker.getValue().equals(null)) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("The fields or date picker cannot be left blank.");
+            errorAlert.setContentText("Please enter valid description between 1 and 256 characters and valid date.");
+            errorAlert.showAndWait();
+        }else if(list.itemExists(descriptionTextField.getText())){
+            //check if the item already exists, if so show error
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Items exists already");
+            errorAlert.setContentText("Please edit the existing item. Duplicate items are not supported.");
+            errorAlert.showAndWait();
+        } else {
+            //if text field and date picker are not left blank nor item does not exist
+            //create new Item object from information in text fields and date picker
+            Item newItem = new Item(descriptionTextField.getText(), dueDatePicker.getValue());
+            //add to list
+            list.addItem(newItem);
 
-        if(descriptionTextField.getText().equals("")) {
-            description = "";
+            //add to the display
+            tableView.getItems().add(newItem);
+            //sort by date
+            sortByDate();
+            //refresh table
+            tableView.refresh();
+
+            //clear the fields for adding next item
+            clearField();
         }
-        if(dueDatePicker.getValue().equals(null)){
-            dueDate = null;
-        }
-
-        Item newItem = new Item(description, dueDate);
-        //add to list
-        list.addItem(newItem);
-
-        //ObservableList<Item> items = FXCollections.observableArrayList(list.getAllItems());
-        //tableView.setItems(items);
-        tableView.getItems().add(newItem);
-        sortByDate();
-        tableView.refresh();
-        clearField();
     }
 
     public void removeItemClicked(ActionEvent actionEvent){
-
+        //get selected row from the table
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
+        //console message
         System.out.print("Removing item: ");
         System.out.println(selectedItem.getDescription() + " ");
         System.out.println(selectedItem.getDueDate() + "\n");
 
+        //display that item in the text field and date picker
         displayItem(selectedItem);
 
-        list.removeItem(selectedItem);
-        tableView.getItems().remove(selectedItem);
+        list.removeItem(selectedItem); //call list's removeItem() method
+        tableView.getItems().remove(selectedItem); //remove it from the table
 
+        //sort by date again
         sortByDate();
+        //refresh the table
         tableView.refresh();
 
+        //clear the text field and date picker
         clearField();
     }
 
     public void clearAllClicked(ActionEvent actionEvent){
 
-        System.out.println("Clearing all");
+        System.out.println("Clearing all"); //console message
 
-        list.clearAll();
+        list.clearAll(); //call list's clearAll() method
 
-        //obList = FXCollections.observableArrayList(list.getAllItems());
-        //tableView.setItems(obList);
-        tableView.getItems().clear();
+        tableView.getItems().clear(); //also clear from the table display
     }
 
 
     public void editItemClicked(ActionEvent actionEvent){
+        //get the selected item from the table
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
+        //console message
         System.out.print("Editing item: ");
         System.out.println(selectedItem.getDescription() + " ");
         System.out.println(selectedItem.getDueDate() + "\n");
 
+        //create new temp variables and assign with information from fields
         String newDescription = descriptionTextField.getText();
         LocalDate newDueDate = dueDatePicker.getValue();
 
+        //call list's updateItem() method by passing new temp variables
         list.updateItem(selectedItem, newDescription, newDueDate);
+        //sort by date again
         sortByDate();
+        //refresh the table
         tableView.refresh();
 
+        //clear the text field and date picker
         clearField();
     }
 
     public void helpBtnClicked(ActionEvent actionEvent) throws IOException {
-        /*FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("HelpScreen.fxml"));
-
-        Parent helpScreenParent = loader.load();
-        Scene helpScreenScene = new Scene(helpScreenParent);
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setScene(helpScreenScene);
-        window.show();*/
-
-        //open a new window
+        //open a new separate window
         Parent helpScreenParent = FXMLLoader.load(getClass().getResource("HelpScreen.fxml"));
 
+        //scroll pane, makes the window scrollable
         ScrollPane sp = new ScrollPane();
         sp.setContent(helpScreenParent);
 
-
-        /*BorderPane bp = new BorderPane();
-        bp.setLeft(sp);*/
-
+        //sets stage and scene with width and height
         Stage helpStage = new Stage();
         helpStage.setTitle("Help");
         helpStage.setScene(new Scene(sp, 720, 500));
-        helpStage.show();
-
-        //don't hide existing screen
-        //((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+        helpStage.show(); //displays
     }
 
-
-    /*Parent root;
-        try {
-        root = FXMLLoader.load(getClass().getClassLoader().getResource("path/to/other/view.fxml"), resources);
-        Stage stage = new Stage();
-        stage.setTitle("My New Stage Title");
-        stage.setScene(new Scene(root, 450, 450));
-        stage.show();
-        // Hide this current window (if this is what you want)
-        ((Node)(event.getSource())).getScene().getWindow().hide();
-    }
-        catch (IOException e) {
-        e.printStackTrace();
-    }
-}*/
+    //gets selected row/item from the table and displays it
     public void selectedRow(){
+        //gets item
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+        //display
         displayItem(selectedItem);
     }
 
+    //displays item in fields
     public void displayItem(Item item){
+        //sets the fields and date picker to selected items' values
         descriptionTextField.setText(item.getDescription());
         dueDatePicker.setValue(item.getDueDate());
     }
 
     public void clearField(){
-        //descriptionTextField.setPromptText("Description");
+        //clears text fields and date picker
         descriptionTextField.setText("");
         dueDatePicker.setValue(null);
     }
-
-    /*public void fieldsClicked(){
-        displayAllItems();
-    }*/
-    /*public void editItemClicked(ActionEvent actionEvent) {
-        //get the ToDoList list and Item item objects from which button clicked
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //if description edited, call the Item object's editDescription() method
-        //if date edited, call the Item's object's editDate() method
-    }
-
-    public void deleteItemClicked(ActionEvent actionEvent) {
-        //get the ToDoList list and Item item objects from which button clicked
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //remove the item from that ToDoList object's items list
-    }
-
-    public void itemFinishedSelected(ActionEvent actionEvent) {
-        //get the Item and ToDoList object from which the finished is selected
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //check whether it is checked or not
-        //if checked mark the boolean "check" as true, else as false
-        //update that item finished by calling editFinished() with passing in the boolean "check"
-    }
-
-    //save and load options
-    public void saveListClicked(ActionEvent actionEvent) {
-        //get the list that was clicked - saveList
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //call AllLists save(saveList) method by passing the saveList parameter
-    }
-
-    //display options selection
-    public void allDisplaySelected(ActionEvent actionEvent) {
-        //get the ToDoList title from 'displayToDoList' textfield for display options
-        //find the ToDoList by using getTitle() and listExists() and store it in new ToDoList obj - displayList
-        //check whether allDisplay is marked or not
-        //if it is,
-        //call the displayItems() method with the parameter of the
-        // return value from ToDoLists's getAllItems() method by passing displayList
-    }
-
-    public void completeDisplaySelected(ActionEvent actionEvent) {
-        //get the ToDoList title from 'displayToDoList' textfield for display options
-        //find the ToDoList by using getTitle() and listExists() and store it in new ToDoList obj - displayList
-        //check whether completeDisplay is marked or not
-        //if it is,
-        //call the displayItems() method with the parameter of the
-        //return value from ToDoLists's completeItems() method by passing displayList
-    }
-
-    public void incompleteDisplaySelected(ActionEvent actionEvent) {
-        //get the ToDoList title from 'displayToDoList' textfield for display options
-        //find the ToDoList by using getTitle() and listExists() and store it in new ToDoList obj - displayList
-        //check whether inCompleteDisplay is marked or not
-        //if it is,
-        //call the displayItems() method with the parameter of the
-        //return value from ToDoLists's inCompleteItems() method by passing displayList
-    }
-
-    public void displayItems(ArrayList<Item> items, ToDoList list){
-        //find the 'list' and clear its display
-        //loop through 'items'
-        //display them on screen withing the 'list'
-    }
-    public void displayLists(ArrayList<ToDoList> lists){
-        //firstly, call the AllLists's sort() method and then
-        //loop through the parameter of all lists
-        //display them on screen
-    }*/
-
-    /*
-    NOT NEEDED METHODS ANYMORE
-
-    public void saveAllClicked(ActionEvent actionEvent) {
-        //call AllLists saveAll() method
-    }
-
-    public void loadRecentClicked(ActionEvent actionEvent) {
-        //get the ToDoList object LoadList from calling AllLists loadRecent() method
-        //display() that ToDoList object LoadList
-    }
-
-    public void loadAllClicked(ActionEvent actionEvent) {
-        //declare new arraylist LoadAll
-        //initialize that arrayList LoadAll with return value from calling AllLists loadAll() method
-        //pass the new arrayList into display() method
-    }
-
-    public void saveItemClicked(ActionEvent actionEvent) {
-        //get the list the of the saved item
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //get the description "item_des" and date "item_date" textfields
-        //create new Item object by calling the constructor
-        //add the new Item object into the existing list
-        //call ToDoList addItem() method
-    }
-
-
-    list options if included multiple lists
-    public void editListClicked(ActionEvent actionEvent) {
-        //get the ToDoList list object from which the edit is clicked
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //find the list is in (using the title) from AllLists arraylist
-        //if title is edited, call the ToDoList object's editTitle() by passing new title
-    }
-
-    public void deleteListClicked(ActionEvent actionEvent) {
-        //get the ToDoList list object from which the edit is clicked
-        //call AllLists's listExists(), if true continue, else addToDoList() to AllLists arraylist
-        //find the list is in (using the title) from AllLists arraylist
-        //remove that list from the AllLists arraylist
-    }
-
-    public void addListClicked(ActionEvent actionEvent) {
-        //show up the anchor pane "todoList_Pane"
-    }*/
 }
